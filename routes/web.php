@@ -11,6 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'PagesController@home');
+Route::get('/about', ['middleware' => ['auth']] ,'PagesController@about');
+Route::get('/contact', 'PagesController@contact');
+
+Route::group(['middleware' => ['web']], function(){
+	Route::get('/login/facebook', 'Auth\AuthController@redirectToFacebook' )->name('fblogin');
+	Route::get('/login/facebook/callback', 'Auth\AuthController@getFacebookCallback');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
